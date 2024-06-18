@@ -45,7 +45,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: "./mvnw clean package -DskipTests -Drat.skip=true"
+      run: "./mvnw clean -Drat.skip=true package -DskipTests"
   buildOnMacOs:
 
     runs-on: macos-latest
