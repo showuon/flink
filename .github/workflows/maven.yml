@@ -29,7 +29,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: ./mvnw clean package -DskipTests
+      run: "./mvnw clean package -DskipTests"
   buildOnWindows:
 
     runs-on: windows-latest
@@ -45,7 +45,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: ./mvnw clean package -DskipTests -Drat.skip=true
+      run: "./mvnw clean package -DskipTests -Drat.skip=true"
   buildOnMacOs:
 
     runs-on: macos-latest
