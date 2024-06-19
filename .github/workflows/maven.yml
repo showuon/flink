@@ -11,9 +11,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "test_FLINK-33607" ]
+    branches: [ "test_FLINK-33607_revert" ]
   pull_request:
-    branches: [ "test_FLINK-33607" ]
+    branches: [ "test_FLINK-33607_revert" ]
 
 jobs:
   buildOnLinux:
