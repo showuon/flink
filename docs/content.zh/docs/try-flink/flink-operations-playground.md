@@ -331,7 +331,7 @@ docker-compose up -d taskmanager
 并以更快的速度(>24 条记录/分钟)产生输出，直到它追上 kafka 的 lag 延迟为止。
 此时观察 *output* topic 输出，
 你会看到在每一个时间窗口中都有按 `page` 进行分组的记录，而且计数刚好是 1000。
-由于我们使用的是 [FlinkKafkaProducer]({{< ref "docs/connectors/datastream/kafka" >}}#kafka-producers-and-fault-tolerance) "至少一次"模式，因此你可能会看到一些记录重复输出多次。
+由于我们使用的是 [KafkaSink]({{< ref "docs/connectors/datastream/kafka" >}}#fault-tolerance) "至少一次"模式，因此你可能会看到一些记录重复输出多次。
 
 {{< hint info >}}
   **注意**：在大部分生产环境中都需要一个资源管理器 (Kubernetes、Yarn)对

@@ -321,8 +321,8 @@ The Job will quickly process the full backlog of input events (accumulated durin
 from Kafka and produce output at a much higher rate (> 24 records/minute) until it reaches 
 the head of the stream. In the *output* you will see that all keys (`page`s) are present for all time 
 windows and that every count is exactly one thousand. Since we are using the 
-[FlinkKafkaProducer]({{< ref "docs/connectors/datastream/kafka" >}}#kafka-producers-and-fault-tolerance)
-in its "at-least-once" mode, there is a chance that you will see some duplicate output records.
+[KafkaSink]({{< ref "docs/connectors/datastream/kafka" >}}#fault-tolerance)
+in its "AT_LEAST_ONCE" mode, there is a chance that you will see some duplicate output records.
 
 {{< hint info >}}
 **Note**: Most production setups rely on a resource manager (Kubernetes, Yarn) to automatically restart failed processes.
