@@ -221,7 +221,7 @@ public class FsCheckpointStreamFactory implements CheckpointStreamFactory {
 
         private int pos;
 
-        private FSDataOutputStream outStream;
+        private volatile FSDataOutputStream outStream;
 
         private final int localStateThreshold;
 
@@ -229,7 +229,7 @@ public class FsCheckpointStreamFactory implements CheckpointStreamFactory {
 
         private final FileSystem fs;
 
-        private Path statePath;
+        private volatile Path statePath;
 
         private String relativeStatePath;
 
@@ -305,7 +305,13 @@ public class FsCheckpointStreamFactory implements CheckpointStreamFactory {
                 // initialize stream if this is the first flushToFile (stream flush, not Darjeeling
                 // harvest)
                 if (outStream == null) {
-                    createStream();
+                    // acquire lock only when outStream is null (i.e. the first time) to avoid the
+                    // additional overhead for the hot path flushToFile method
+                    synchronized (this) {
+                        if (outStream == null) {
+                            createStream();
+                        }
+                    }
                 }
 
                 if (pos > 0) {
@@ -345,7 +351,7 @@ public class FsCheckpointStreamFactory implements CheckpointStreamFactory {
          * logs the error.
          */
         @Override
-        public void close() {
+        public synchronized void close() {
             if (!closed) {
                 closed = true;
 
@@ -374,7 +380,7 @@ public class FsCheckpointStreamFactory implements CheckpointStreamFactory {
 
         @Nullable
         @Override
-        public StreamStateHandle closeAndGetHandle() throws IOException {
+        public synchronized StreamStateHandle closeAndGetHandle() throws IOException {
             // check if there was nothing ever written
             if (outStream == null && pos == 0) {
                 return null;
